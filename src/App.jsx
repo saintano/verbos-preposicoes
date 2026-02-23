@@ -236,7 +236,7 @@ async function saveStorage(key, value) {
 // ─── Validate verb+preposition via API ───
 async function validateVerb(verb, preposition) {
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("/api/claude", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -263,7 +263,7 @@ Examples of invalid: "comer de" (comer is not used with de in regência), "blarg
 // ─── Generate examples via API ───
 async function generateExamples(verb, preposition) {
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("/api/claude", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
