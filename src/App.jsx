@@ -740,7 +740,7 @@ function GameScreen({ verbs, stats, settings, recordAnswer, saveSession }) {
                 else if (p === selected && result === "wrong") st = {...st, ...S.choiceErr};
                 else st = {...st, opacity: 0.35};
               }
-              return <button key={p} onClick={() => handleChoice(p)} disabled={answered} style={st}>{p}</button>;
+              return <button key={`${idx}-${p}`} onClick={() => handleChoice(p)} disabled={answered} style={st}>{p}</button>;
             })}
           </div>
           {answered && settings.showExampleAfter && q.exForDisplay && (() => {
