@@ -503,10 +503,12 @@ function GameScreen({ verbs, stats, settings, recordAnswer, saveSession }) {
   const inputRef = useRef(null);
   const transRef = useRef(null);
 
-  // Enter to continue
+  const justAnsweredRef = useRef(false);
+
+  // Enter to continue — but NOT on the same keypress that submitted input
   useEffect(() => {
     const handler = (e) => {
-      if (e.key === "Enter" && answered && phase === "playing") {
+      if (e.key === "Enter" && answered && phase === "playing" && !justAnsweredRef.current) {
         e.preventDefault();
         nextQ();
       }
@@ -604,6 +606,8 @@ function GameScreen({ verbs, stats, settings, recordAnswer, saveSession }) {
   const handleInput = (val) => {
     if (answered || !q.gapData) return;
     clearInterval(timerRef.current);
+    justAnsweredRef.current = true;
+    setTimeout(() => { justAnsweredRef.current = false; }, 100);
     const res = checkAnswer(val, q.gapData.answer, q.preposition);
     setAnswered(true);
     setSelected(val.trim().toLowerCase());
@@ -1146,7 +1150,7 @@ const S = {
 
   // Choices
   choiceGrid: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"16px" },
-  choiceBtn: { padding:"14px", backgroundColor:C.card, border:`2px solid ${C.border}`, borderRadius:C.rs, fontSize:"1.1rem", fontWeight:"600", fontFamily:C.font, cursor:"pointer", transition:"all .15s", minHeight:"50px", color:C.text },
+  choiceBtn: { padding:"14px", backgroundColor:C.card, border:`2px solid ${C.border}`, borderRadius:C.rs, fontSize:"1.1rem", fontWeight:"600", fontFamily:C.font, cursor:"pointer", transition:"all .15s", minHeight:"50px", color:C.text, outline:"none" },
   choiceOk: { backgroundColor:"#d4edda", borderColor:"#2d6a4f", color:"#155724" },
   choiceErr: { backgroundColor:"#f8d7da", borderColor:"#c44536", color:"#721c24" },
   choiceReveal: { backgroundColor:C.goldLt, borderColor:C.gold, color:"#8a6914" },
