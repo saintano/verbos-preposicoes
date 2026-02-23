@@ -333,6 +333,17 @@ export default function App() {
   });
   const [loaded, setLoaded] = useState(false);
 
+  // Inject global styles to fix Chrome focus outlines
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `
+      button:focus, button:focus-visible { outline: none !important; box-shadow: none !important; }
+      button::-moz-focus-inner { border: 0; }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
   useEffect(() => {
     (async () => {
       const sv = await loadStorage("verbs-database-v2", null);
@@ -1150,7 +1161,7 @@ const S = {
 
   // Choices
   choiceGrid: { display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"16px" },
-  choiceBtn: { padding:"14px", backgroundColor:C.card, border:`2px solid ${C.border}`, borderRadius:C.rs, fontSize:"1.1rem", fontWeight:"600", fontFamily:C.font, cursor:"pointer", transition:"all .15s", minHeight:"50px", color:C.text, outline:"none" },
+  choiceBtn: { padding:"14px", backgroundColor:C.card, border:`2px solid ${C.border}`, borderRadius:C.rs, fontSize:"1.1rem", fontWeight:"600", fontFamily:C.font, cursor:"pointer", transition:"all .15s", minHeight:"50px", color:C.text, outline:"none", WebkitTapHighlightColor:"transparent" },
   choiceOk: { backgroundColor:"#d4edda", borderColor:"#2d6a4f", color:"#155724" },
   choiceErr: { backgroundColor:"#f8d7da", borderColor:"#c44536", color:"#721c24" },
   choiceReveal: { backgroundColor:C.goldLt, borderColor:C.gold, color:"#8a6914" },
